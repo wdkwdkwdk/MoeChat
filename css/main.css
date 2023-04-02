@@ -17,15 +17,15 @@ main::-webkit-scrollbar {
 
 
 .app-title {
-	text-align: center;
+	text-align: left;
 	color: transparent;
 	font-weight: bold;
-	background: linear-gradient(45deg, rgba(255, 85, 127, 1) 100%, rgba(170, 85, 127, .4) 0%);
+	background: linear-gradient(45deg, rgba(255, 165, 0, 1) 100%, rgba(170, 85, 127, .4) 0%);
 	-webkit-background-clip: text;
 }
 
 .lite-chatbox .cleft .content {
-	background: rgba(255, 85, 127, 0.3) 50%;
+	background: rgba(255, 165, 0, 0.3) 50%;
 }
 
 .paper {

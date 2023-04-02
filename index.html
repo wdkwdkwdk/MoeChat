@@ -12,15 +12,37 @@
 		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			.el-input--small input:focus {
+				transform: none;
+				}
+				.el-input input:focus {
+				transform: none;
+				}
 
+				.el-input--large input:focus {
+				transform: none;
+				}
+		</style>
 	</head>
 	<body>
 		<body>
 
 			<el-container id="app" class="paper">
 				<el-header>
-				<div class="app-title">DK数字版</div>
+				<el-row>
+						<el-col :span="12"><div class="app-title">DK数字版 <i class="el-icon-info"></i></div></el-col>
+						<el-col :span="12"><div style="text-align: right;"><a href="https://6pen.art" target="_blank"><el-button size="small" round>了解更多</el-button></a></div></div></el-col>
+				</el-row>
+				<!-- <div class="app-title">DK数字版</div>
+				<i class="el-icon-info"></i> -->
 				</el-header>
+				<el-alert
+				title="不要抱有太高期望"
+				type="warning"
+				description="模型训练所用数据均由我本人产生，且仅用于测试目的，这不是一个帮你完成任务的模型，建议仅仅只是聊天"
+				show-icon>
+			  </el-alert>
 				<el-main>
 					<!-- 主容器 -->
 					<el-row :span="22">
@@ -38,7 +60,7 @@
 					<div class="inputBox">
 						<el-row>
 							<el-col :span="18">
-								<el-input v-model="inputBox" @keyup.enter.native="send" placeholder="请输入内容"></el-input>
+								<el-input v-model="inputBox"  @keyup.enter.native="send" placeholder="请输入内容"></el-input>
 							</el-col>
 							 
 							<el-col :span="4">
