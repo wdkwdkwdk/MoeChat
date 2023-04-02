@@ -97,7 +97,12 @@
 								console.log(response.data);
 								reply = dk_response.response
 								this2.history = dk_response.history
-								this2.messageList.push({
+
+								if ( reply == null && this2.history == null) {
+									alert("我的祖传V100服务器似乎出了点什么问题，请过段时间再看看")
+								}
+								else{
+									this2.messageList.push({
 									nick: this2.botNick,
 									msg: reply,
 									direction: 'cleft',
@@ -108,6 +113,7 @@
 									div.scrollTop = div.scrollHeight;
 									this2.inputBox = '';
 								}, 100)
+								}
 							})
 							.catch(function (error) {
 								if (error == 'AxiosError: Request failed with status code 429') {
