@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title></title>
+		<title>DK数字分身</title>
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 		<link rel="stylesheet" type="text/css" href="./css/litewebchat.css" />
 		<!-- 引入样式 -->
@@ -50,7 +50,7 @@
 				</el-main>
 				
 			</el-container>
-			<el-row><div class="powered">Powered by <a href="https://github.com/Fzoss/MoeChat">MoeChat</a></div></el-row>
+			<el-row><div class="powered"><a href="https://greatdk.com">DK</a>数字分身</div></el-row>
 		</body>
 		
 		<script type="text/javascript">
@@ -61,9 +61,10 @@
 						messageList: [],
 						inputBox: '',
 						botNick: 'DK',
+						history: [],
 						thesaurus: '',
 						botAvatar: 'https://cdn.2zimu.com/mbd_file_NDdfNDE1ODM5XzE2ODA0NTAzNTQ1NTRfMTY4MDQ1MDM1NDU1NA.png-webicon',
-						myAvatar: 'B.jpg'
+						myAvatar: 'https://cdn.2zimu.com/mbd_1630305272952_screenshot_1630305272750.jpg-webicon'
 					}
 			
 				},
@@ -87,15 +88,15 @@
 						// 	}
 						// }
 
-						history = []
 						this2 = this
-						axios.post('https://service-ei2k47mp-1251731618.bj.apigw.tencentcs.com/release/dk_ai', { text: this.inputBox, history: history }, {
+						axios.post('https://service-ei2k47mp-1251731618.bj.apigw.tencentcs.com/release/dk_ai', { text: this.inputBox, history: this.history }, {
 							headers: { 'Content-Type': 'application/json' }
 							})
 							.then(function (response) {
 								dk_response = response.data
 								console.log(response.data);
 								reply = dk_response.response
+								this2.history = dk_response.history
 								this2.messageList.push({
 									nick: this2.botNick,
 									msg: reply,
@@ -109,7 +110,11 @@
 								}, 100)
 							})
 							.catch(function (error) {
-								alert(error)
+								if (error == 'AxiosError: Request failed with status code 429') {
+									alert("不好意思，这个服务跑在一台服务器上，就像一个人一样，处理不了太多消息，所以有一些访问控制，你可以过30秒再发一条试试看")
+								}else{
+									alert(error)
+								}
 								console.error(error);
 							});
 						// if (words.length != 0) {
@@ -124,7 +129,7 @@
 					// this.getThesaurus();
 					this.messageList.push({
 						nick: this.botNick,
-						msg: '你好',
+						msg: '你好，我是由王登科的微信聊天记录，微博及文章作为训练数据，基于 chatglm-6b 训练的一个模型，相较于 chatgpt 这样的模型，我的特点更像是某种对「人」的克隆，因为我的所有来源都是小王这个人所生成的内容（他的回复，他的文章，他的想法）。我并不是他的百科，我也不了解他的所有事情，但是我具备某些和他一样的特点，因为在训练中，他的内容重塑了我的60亿参数',
 						direction: 'cleft',
 						avatar: this.botAvatar
 					});
