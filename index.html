@@ -20,7 +20,7 @@
 
 			<el-container id="app" class="paper">
 				<el-header>
-				<div class="app-title">可爱の{{botNick}}</div>
+				<div class="app-title">DK数字版</div>
 				</el-header>
 				<el-main>
 					<!-- 主容器 -->
@@ -29,7 +29,7 @@
 
 							<div v-for="message in messageList" class="cmsg" v-bind:class="message.direction">
 
-								<img class="headIcon radius" ondragstart="return false;" oncontextmenu="return false;" v-bind:src="['./img/avatar/'+message.avatar]" />
+								<img class="headIcon radius" ondragstart="return false;" oncontextmenu="return false;" v-bind:src=message.avatar />
 								<span class="name">{{ message.nick }}</span>
 								<span class="content">{{ message.msg }}</span>
 							</div>
@@ -60,18 +60,18 @@
 					return {
 						messageList: [],
 						inputBox: '',
-						botNick: '赤岛酱',
+						botNick: 'DK',
 						thesaurus: '',
-						botAvatar: 'C.png',
+						botAvatar: 'https://cdn.2zimu.com/mbd_file_NDdfNDE1ODM5XzE2ODA0NTAzNTQ1NTRfMTY4MDQ1MDM1NDU1NA.png-webicon',
 						myAvatar: 'B.jpg'
 					}
 			
 				},
 				methods: {
-					getThesaurus: function() {
-						axios.get('https://raw.githubusercontent.com/Kyomotoi/AnimeThesaurus/main/data.json')
-							.then((response) => this.thesaurus = response.data)
-					},
+					// getThesaurus: function() {
+					// 	axios.get('https://raw.githubusercontent.com/Kyomotoi/AnimeThesaurus/main/data.json')
+					// 		.then((response) => this.thesaurus = response.data)
+					// },
 					send: function() {
 						this.messageList.push({
 							nick: '你',
@@ -79,39 +79,52 @@
 							direction: 'cright',
 							avatar: this.myAvatar
 						});
-						var words = [],
-							reply = '';
-						for (obj in this.thesaurus) {
-							if (this.inputBox.indexOf(obj) != -1) {
-								words.push(obj);
-							}
-						}
-			
-						if (words.length != 0) {
-							word = words[Math.floor(Math.random() * words.length)];
-							list = this.thesaurus[word];
-						} else {
-							list = ["唔，没有搞懂主人在说什么诶", "没有听懂qwq", "虽然不知道在说什么，但感觉很厉害的样子~", "我是不是太笨啦，没理解主人什么意思qaq"]
-						}
-						reply = list[Math.floor(Math.random() * list.length)];
-						this.messageList.push({
-							nick: this.botNick,
-							msg: reply,
-							direction: 'cleft',
-							avatar: this.botAvatar
-						});
-						setTimeout(() => {
-							var div = document.getElementsByClassName('el-main')[0];
-							div.scrollTop = div.scrollHeight;
-							this.inputBox = '';
-						}, 100)
+						// var words = [],
+						// 	reply = '';
+						// for (obj in this.thesaurus) {
+						// 	if (this.inputBox.indexOf(obj) != -1) {
+						// 		words.push(obj);
+						// 	}
+						// }
+
+						history = []
+						this2 = this
+						axios.post('https://service-ei2k47mp-1251731618.bj.apigw.tencentcs.com/release/dk_ai', { text: this.inputBox, history: history }, {
+							headers: { 'Content-Type': 'application/json' }
+							})
+							.then(function (response) {
+								dk_response = response.data
+								console.log(response.data);
+								reply = dk_response.response
+								this2.messageList.push({
+									nick: this2.botNick,
+									msg: reply,
+									direction: 'cleft',
+									avatar: this2.botAvatar
+								});
+								setTimeout(() => {
+									var div = document.getElementsByClassName('el-main')[0];
+									div.scrollTop = div.scrollHeight;
+									this2.inputBox = '';
+								}, 100)
+							})
+							.catch(function (error) {
+								alert(error)
+								console.error(error);
+							});
+						// if (words.length != 0) {
+						// 	word = words[Math.floor(Math.random() * words.length)];
+						// 	list = this.thesaurus[word];
+						// } else {
+						// 	list = ["唔，没有搞懂主人在说什么诶", "没有听懂qwq", "虽然不知道在说什么，但感觉很厉害的样子~", "我是不是太笨啦，没理解主人什么意思qaq"]
+						// }
 					}
 				},
 				created: function() {
-					this.getThesaurus();
+					// this.getThesaurus();
 					this.messageList.push({
 						nick: this.botNick,
-						msg: '你好呀',
+						msg: '你好',
 						direction: 'cleft',
 						avatar: this.botAvatar
 					});
