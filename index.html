@@ -27,7 +27,6 @@
 	</head>
 	<body>
 		<body>
-
 			<el-container id="app" class="paper">
 				<el-header>
 				<el-row>
@@ -45,7 +44,7 @@
 				description="模型训练所用数据均由我本人产生，且仅用于测试目的，这不是一个帮你完成任务的模型，建议仅仅只是聊天"
 				show-icon>
 			  </el-alert>
-				<el-main>
+				<el-main v-if="!is_sleep">
 					<!-- 主容器 -->
 					<el-row :span="24">
 						<div class="lite-chatbox">
@@ -59,7 +58,7 @@
 						</div>
 					</el-row>
 
-					<div class="inputBox">
+					<div class="inputBox" v-loading="in_gen">
 						<el-row>
 							<el-col :span="15">
 								<el-input v-model="inputBox"  @keyup.enter.native="send" placeholder="请输入内容"></el-input>
@@ -105,6 +104,15 @@
 
 					</div>
 				</el-main>
+
+				<el-main v-if="is_sleep">
+					<el-result icon="warning" title="来的不巧" sub-title="模型在调整，或者我暂时把服务器关了">
+						<template slot="extra">
+						  <a href="https://6pen.art"><el-button type="primary" size="medium">👀看看我搞的别的东西</el-button></a>
+						</template>
+					  </el-result>
+				</el-main>
+
 				
 			</el-container>
 		</body>
@@ -122,10 +130,12 @@
 						thesaurus: '',
 						botAvatar: 'https://cdn.2zimu.com/mbd_file_NDdfNDE1ODM5XzE2ODA0NTAzNTQ1NTRfMTY4MDQ1MDM1NDU1NA.png-webicon',
 						myAvatar: 'https://cdn.2zimu.com/mbd_1630305272952_screenshot_1630305272750.jpg-webicon',
-						do_sample: false,
+						do_sample: true,
 						temperature:0.7,
-						top_p:0.7,
-						num_beams:2
+						top_p:0.9,
+						num_beams:2,
+						in_gen:false,
+						is_sleep:false
 					}
 			
 				},
@@ -134,6 +144,29 @@
 					// 	axios.get('https://raw.githubusercontent.com/Kyomotoi/AnimeThesaurus/main/data.json')
 					// 		.then((response) => this.thesaurus = response.data)
 					// },
+					getStatus(){
+						this2 = this
+						const requestData = {
+							check_status: "yes"
+						};
+						axios.post("https://service-ei2k47mp-1251731618.bj.apigw.tencentcs.com/release/dk_ai", requestData, {
+						headers: {
+								"Content-Type": "application/json"
+							}
+						})
+						.then(response => {
+							console.log(response.data);
+							if (response.data.state=="sleeping") {
+								this2.is_sleep = true
+							}
+						})
+						.catch(error => {
+							console.error(error);
+							if (response.data.state=="sleeping") {
+								this2.is_sleep = true
+							}
+						});
+					},
 					open() {
 						this.$alert('这是一段内容', '标题名称', {
 						confirmButtonText: '确定',
@@ -146,6 +179,7 @@
 						});
 					},
 					send: function() {
+						this.in_gen = true
 						this.messageList.push({
 							nick: '你',
 							msg: this.inputBox,
@@ -169,7 +203,7 @@
 								console.log(response.data);
 								reply = dk_response.response
 								this2.history = dk_response.history
-
+								this2.in_gen = false
 								if ( reply == null && this2.history == null) {
 									alert("我的祖传V100服务器似乎出了点什么问题，请过段时间再看看")
 								}
@@ -184,6 +218,7 @@
 									var div = document.getElementsByClassName('el-main')[0];
 									div.scrollTop = div.scrollHeight;
 									this2.inputBox = '';
+									thi2.in_gen = false
 								}, 100)
 								}
 							})
@@ -194,17 +229,12 @@
 									alert(error)
 								}
 								console.error(error);
+								thi2.in_gen = false
 							});
-						// if (words.length != 0) {
-						// 	word = words[Math.floor(Math.random() * words.length)];
-						// 	list = this.thesaurus[word];
-						// } else {
-						// 	list = ["唔，没有搞懂主人在说什么诶", "没有听懂qwq", "虽然不知道在说什么，但感觉很厉害的样子~", "我是不是太笨啦，没理解主人什么意思qaq"]
-						// }
 					}
 				},
 				created: function() {
-					// this.getThesaurus();
+					this.getStatus();
 					this.messageList.push({
 						nick: this.botNick,
 						msg: '你好，我是由王登科的微信聊天记录，微博及文章作为训练数据，基于 chatglm-6b 训练的一个模型，相较于 chatgpt 这样的模型，我的特点更像是某种对「人」的克隆，因为我的所有来源都是小王这个人所生成的内容（他的回复，他的文章，他的想法）。我并不是他的百科，我也不了解他的所有事情，但是我具备某些和他一样的特点，因为在训练中，他的内容重塑了我的60亿参数',
