@@ -31,8 +31,10 @@
 			<el-container id="app" class="paper">
 				<el-header>
 				<el-row>
-						<el-col :span="12"><div class="app-title">DK数字版 <i class="el-icon-info"></i></div></el-col>
-						<el-col :span="12"><div style="text-align: right;"><a href="https://6pen.art" target="_blank"><el-button size="small" round>了解更多</el-button></a></div></div></el-col>
+						<el-col :span="12"><div class="app-title">DK数字版 0.1<i class="el-icon-info"></i></div></el-col>
+						<el-col :span="12">
+							<div style="text-align: right;">
+								<a href="https://6pen.art" target="_blank"><el-button size="small" round>了解更多</el-button></a></div></div></el-col>
 				</el-row>
 				<!-- <div class="app-title">DK数字版</div>
 				<i class="el-icon-info"></i> -->
@@ -45,7 +47,7 @@
 			  </el-alert>
 				<el-main>
 					<!-- 主容器 -->
-					<el-row :span="22">
+					<el-row :span="24">
 						<div class="lite-chatbox">
 
 							<div v-for="message in messageList" class="cmsg" v-bind:class="message.direction">
@@ -59,30 +61,24 @@
 
 					<div class="inputBox">
 						<el-row>
-							<el-col :span="18">
+							<el-col :span="15">
 								<el-input v-model="inputBox"  @keyup.enter.native="send" placeholder="请输入内容"></el-input>
 							</el-col>
 							 
-							<el-col :span="4">
+							<el-col :span="8">
 								<el-button @click="send" >发送</el-button>
-								<el-col>
+								<el-button @click="openSetting = ! openSetting" type="warning" icon="el-icon-s-tools" size="small" circle></el-button>
+							<el-col>
 						</el-row>
 
-						<div style="text-align: left;padding-top: 10px;">
-						<el-switch
-							v-model="openSetting"
-							inactive-text="高级设置">
-						</el-switch>
-						</div>
-
-						<div v-if="openSetting" style="padding-top: 10px;">
+						<div v-if="openSetting" style="padding-top: 10px;background: white;">
 							<el-row :gutter="20">
-								<el-col :span="11">
+								<el-col :span="13">
 								<el-input v-model="temperature" placeholder="如果你不知道这是啥，就不要改">
 									<template slot="prepend">temperature</template>
 								</el-input>
 								</el-col>
-								<el-col :span="11">
+								<el-col :span="9">
 									<el-input v-model="top_p" placeholder="如果你不知道这是啥，就不要改">
 										<template slot="prepend">top_p</template>
 									</el-input>
@@ -129,7 +125,7 @@
 						do_sample: false,
 						temperature:0.7,
 						top_p:0.7,
-						num_beams:3
+						num_beams:2
 					}
 			
 				},
@@ -138,6 +134,17 @@
 					// 	axios.get('https://raw.githubusercontent.com/Kyomotoi/AnimeThesaurus/main/data.json')
 					// 		.then((response) => this.thesaurus = response.data)
 					// },
+					open() {
+						this.$alert('这是一段内容', '标题名称', {
+						confirmButtonText: '确定',
+						callback: action => {
+							this.$message({
+							type: 'info',
+							message: `action: ${ action }`
+							});
+						}
+						});
+					},
 					send: function() {
 						this.messageList.push({
 							nick: '你',
