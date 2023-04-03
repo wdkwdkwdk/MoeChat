@@ -11,7 +11,7 @@
 		<!-- 引入组件库 -->
 		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<style>
 			.el-input--small input:focus {
 				transform: none;
@@ -67,11 +67,50 @@
 								<el-button @click="send" >发送</el-button>
 								<el-col>
 						</el-row>
+
+						<div style="text-align: left;padding-top: 10px;">
+						<el-switch
+							v-model="openSetting"
+							inactive-text="高级设置">
+						</el-switch>
+						</div>
+
+						<div v-if="openSetting" style="padding-top: 10px;">
+							<el-row :gutter="20">
+								<el-col :span="11">
+								<el-input v-model="temperature" placeholder="如果你不知道这是啥，就不要改">
+									<template slot="prepend">temperature</template>
+								</el-input>
+								</el-col>
+								<el-col :span="11">
+									<el-input v-model="top_p" placeholder="如果你不知道这是啥，就不要改">
+										<template slot="prepend">top_p</template>
+									</el-input>
+								</el-col>
+							</el-row>
+							<br>
+							<el-row :gutter="20">
+								<el-col :span="12">
+									<el-input v-model="num_beams" placeholder="如果你不知道这是啥，就不要改">
+										<template slot="prepend">num_beams</template>
+									</el-input>
+								</el-col>
+								<el-col :span="12">
+									do_sample:
+									<el-switch
+										v-model="do_sample"
+										active-color="#13ce66"
+										inactive-color="#ff4949">
+										</el-switch>
+								</el-col>
+							</el-row>
+						</div>
+
+
 					</div>
 				</el-main>
 				
 			</el-container>
-			<el-row><div class="powered"><a href="https://greatdk.com">DK</a>数字分身</div></el-row>
 		</body>
 		
 		<script type="text/javascript">
@@ -81,11 +120,16 @@
 					return {
 						messageList: [],
 						inputBox: '',
+						openSetting: false,
 						botNick: 'DK',
 						history: [],
 						thesaurus: '',
 						botAvatar: 'https://cdn.2zimu.com/mbd_file_NDdfNDE1ODM5XzE2ODA0NTAzNTQ1NTRfMTY4MDQ1MDM1NDU1NA.png-webicon',
-						myAvatar: 'https://cdn.2zimu.com/mbd_1630305272952_screenshot_1630305272750.jpg-webicon'
+						myAvatar: 'https://cdn.2zimu.com/mbd_1630305272952_screenshot_1630305272750.jpg-webicon',
+						do_sample: false,
+						temperature:0.7,
+						top_p:0.7,
+						num_beams:3
 					}
 			
 				},
@@ -110,7 +154,7 @@
 						// }
 
 						this2 = this
-						axios.post('https://service-ei2k47mp-1251731618.bj.apigw.tencentcs.com/release/dk_ai', { text: this.inputBox, history: this.history }, {
+						axios.post('https://service-ei2k47mp-1251731618.bj.apigw.tencentcs.com/release/dk_ai', { text: this.inputBox, history: this.history, temperature:this.temperature, top_p:this.top_p, num_beams:this.num_beams,do_sample:this.do_sample }, {
 							headers: { 'Content-Type': 'application/json' }
 							})
 							.then(function (response) {
