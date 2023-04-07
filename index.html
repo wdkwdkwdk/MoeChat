@@ -223,13 +223,13 @@
 								}
 							})
 							.catch(function (error) {
-								if (error == 'AxiosError: Request failed with status code 429') {
+								if (error == 'AxiosError: Request failed with status code 429' || error == 'Error: Request failed with status code 429') {
 									alert("不好意思，这个服务跑在一台服务器上，就像一个人一样，处理不了太多消息，所以有一些访问控制，你可以过30秒再发一条试试看")
 								}else{
 									alert(error)
 								}
 								console.error(error);
-								thi2.in_gen = false
+								this2.in_gen = false
 							});
 					}
 				},
