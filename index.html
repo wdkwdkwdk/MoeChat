@@ -33,7 +33,7 @@
 						<el-col :span="12"><div class="app-title">DK数字版 0.1<i class="el-icon-info"></i></div></el-col>
 						<el-col :span="12">
 							<div style="text-align: right;">
-								<a href="https://greatdk.com/1908.html" target="_blank"><el-button size="small" round>了解更多</el-button></a></div></div></el-col>
+								<a class="umami--click--learn-more" href="https://greatdk.com/1908.html" target="_blank"><el-button size="small" round>了解更多</el-button></a></div></div></el-col>
 				</el-row>
 				<!-- <div class="app-title">DK数字版</div>
 				<i class="el-icon-info"></i> -->
@@ -66,7 +66,7 @@
 							 
 							<el-col :span="8">
 								<el-button class="umami--click--send-button" @click="send" >发送</el-button>
-								<el-button @click="openSetting = ! openSetting" type="warning" icon="el-icon-s-tools" size="small" circle></el-button>
+								<el-button class="umami--click--open-setting" @click="openSetting = ! openSetting" type="warning" icon="el-icon-s-tools" size="small" circle></el-button>
 							<el-col>
 						</el-row>
 
@@ -108,7 +108,7 @@
 				<el-main v-if="is_sleep">
 					<el-result icon="warning" title="来的不巧" sub-title="模型在调整，或者我暂时把服务器关了">
 						<template slot="extra">
-						  <a href="https://6pen.art"><el-button type="primary" size="medium">👀看看我搞的别的东西</el-button></a>
+						  <a href="https://6pen.art"><el-button class="umami--click--see-6pen" type="primary" size="medium">👀看看我搞的别的东西</el-button></a>
 						</template>
 					  </el-result>
 				</el-main>
