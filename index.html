@@ -33,7 +33,7 @@
 						<el-col :span="12"><div class="app-title">DK数字版 0.1<i class="el-icon-info"></i></div></el-col>
 						<el-col :span="12">
 							<div style="text-align: right;">
-								<a  href="https://wenjuan.feishu.cn/m?t=sD7JT3OVRyLi-tsre" v-if="showMoreInfo">
+								<a class="umami--click--give-feedback" href="https://wenjuan.feishu.cn/m?t=sD7JT3OVRyLi-tsre" v-if="showMoreInfo">
 									<el-button size="small" round>给我一些反馈 😎</el-button>
 								</a>
 								<a class="umami--click--learn-more" href="https://greatdk.com/1908.html" target="_blank"><el-button size="small" round>训练教程</el-button></a></div></div></el-col>
@@ -130,7 +130,7 @@
 						openSetting: false,
 						botNick: 'DK',
 						history: [],
-						showMoreInfo:true,
+						showMoreInfo:false,
 						thesaurus: '',
 						botAvatar: 'https://cdn.2zimu.com/mbd_file_NDdfNDE1ODM5XzE2ODA0NTAzNTQ1NTRfMTY4MDQ1MDM1NDU1NA.png-webicon',
 						myAvatar: 'https://cdn.2zimu.com/mbd_1630305272952_screenshot_1630305272750.jpg-webicon',
@@ -183,6 +183,9 @@
 						});
 					},
 					send: function() {
+						if ( this.messageList.length > 3){
+							this.showMoreInfo = true
+						}
 						this.in_gen = true
 						this.messageList.push({
 							nick: '你',
