@@ -33,7 +33,10 @@
 						<el-col :span="12"><div class="app-title">DK数字版 0.1<i class="el-icon-info"></i></div></el-col>
 						<el-col :span="12">
 							<div style="text-align: right;">
-								<a class="umami--click--learn-more" href="https://greatdk.com/1908.html" target="_blank"><el-button size="small" round>了解更多</el-button></a></div></div></el-col>
+								<a  href="https://wenjuan.feishu.cn/m?t=sD7JT3OVRyLi-tsre" v-if="showMoreInfo">
+									<el-button size="small" round>给我一些反馈 😎</el-button>
+								</a>
+								<a class="umami--click--learn-more" href="https://greatdk.com/1908.html" target="_blank"><el-button size="small" round>训练教程</el-button></a></div></div></el-col>
 				</el-row>
 				<!-- <div class="app-title">DK数字版</div>
 				<i class="el-icon-info"></i> -->
@@ -41,7 +44,7 @@
 				<el-alert
 				title="不要抱有太高期望"
 				type="warning"
-				description="模型训练所用数据均由我本人产生，且仅用于测试目的，这不是一个帮你完成任务的模型，建议仅仅只是聊天"
+				description="模型训练所用数据均由我本人产生，且仅用于测试目的，它不能完成很难的任务，只能跟你闲聊，如果它骂了人，我代它向你道歉🙇"
 				show-icon>
 			  </el-alert>
 				<el-main v-if="!is_sleep">
@@ -127,6 +130,7 @@
 						openSetting: false,
 						botNick: 'DK',
 						history: [],
+						showMoreInfo:true,
 						thesaurus: '',
 						botAvatar: 'https://cdn.2zimu.com/mbd_file_NDdfNDE1ODM5XzE2ODA0NTAzNTQ1NTRfMTY4MDQ1MDM1NDU1NA.png-webicon',
 						myAvatar: 'https://cdn.2zimu.com/mbd_1630305272952_screenshot_1630305272750.jpg-webicon',
