@@ -30,7 +30,7 @@
 			<el-container id="app" class="paper">
 				<el-header>
 				<el-row>
-						<el-col :span="12"><div class="app-title">DK数字版 0.1<i class="el-icon-info"></i></div></el-col>
+						<el-col :span="12"><div class="app-title">DK数字版 0.2<i class="el-icon-info"></i></div></el-col>
 						<el-col :span="12">
 							<div style="text-align: right;">
 								<a class="umami--click--give-feedback" href="https://wenjuan.feishu.cn/m?t=sD7JT3OVRyLi-tsre" v-if="showMoreInfo">
@@ -58,7 +58,7 @@
 								<span class="content">你好哇
 								</span>
 								<br><br>
-								<el-row :gutter="20">
+								<el-row>
 									<el-col class="umami--click--info-button" :span="6"><el-button @click="sendInfo" size="mini" round >📖 查看说明</el-button></el-col>
 									<el-col class="umami--click--priv-button" :span="6"><el-button @click="privInfo" size="mini" round >🔒 隐私问题</el-button></el-col>
 									<el-col class="umami--click--github-button" :span="6"><el-button @click="goGithub" size="mini" round >💻 github</el-button></el-col>
